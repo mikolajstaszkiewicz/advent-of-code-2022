@@ -17,7 +17,7 @@ public class Day1 {
     elvesCalories = createElvesList(input);
   }
 
-  private List<Integer> createElvesList(String input) {
+  private static List<Integer> createElvesList(String input) {
     List<Integer> elves = new ArrayList<>();
     int caloriesSum = 0;
     for (String calories : input.split("\n", -1)) {
