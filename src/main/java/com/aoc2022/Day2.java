@@ -17,14 +17,47 @@ public class Day2 {
   private final Part2 part2;
   private final Part1 part1;
 
+  public Day2(String input) {
+    part1 = new Part1(input);
+    part2 = new Part2(input);
+  }
+
+  public static void main(String[] args) throws IOException {
+    String input = IOUtils.toString(
+        requireNonNull(Day2.class.getResourceAsStream("/d2/input.txt")),
+        StandardCharsets.UTF_8);
+    Day2 task = new Day2(input);
+    System.out.println("Part1: " + task.part1());
+    System.out.println("Part2: " + task.part2());
+  }
+
+  public long part1() {
+    return part1.score();
+  }
+
+  public long part2() {
+    return part2.score();
+  }
+
   static class Part1 {
+
+    private final List<Game> games = new ArrayList<>();
+
+    public Part1(String input) {
+      for (String lines : input.split("\n")) {
+        String[] shapes = lines.split(" ");
+        games.add(new Game(Shape.fromCode(shapes[0]), Shape.fromCode(shapes[1])));
+      }
+    }
+
+    public long score() {
+      return games.stream().mapToLong(Game::score).sum();
+    }
 
     private enum Shape {
       ROCK(1, "A", "X"),
       PAPER(2, "B", "Y"),
       SCISSORS(3, "C", "Z");
-      final Set<String> codes;
-      final int score;
       static final Map<String, Shape> CODE_TO_SHAPE = new HashMap<>();
 
       static {
@@ -32,6 +65,9 @@ public class Day2 {
           shape.codes.forEach(code -> CODE_TO_SHAPE.put(code, shape));
         }
       }
+
+      final Set<String> codes;
+      final int score;
 
       Shape(int score, String... codes) {
         this.score = score;
@@ -79,12 +115,18 @@ public class Day2 {
       }
     }
 
+
+  }
+
+  static class Part2 {
+
+
     private final List<Game> games = new ArrayList<>();
 
-    public Part1(String input) {
+    public Part2(String input) {
       for (String lines : input.split("\n")) {
         String[] shapes = lines.split(" ");
-        games.add(new Game(Shape.fromCode(shapes[0]), Shape.fromCode(shapes[1])));
+        games.add(new Game(Shape.fromCode(shapes[0]), Result.fromCode(shapes[1])));
       }
     }
 
@@ -92,18 +134,10 @@ public class Day2 {
       return games.stream().mapToLong(Game::score).sum();
     }
 
-
-  }
-
-  static class Part2 {
-
-
     private enum Shape {
       ROCK(1, "A"),
       PAPER(2, "B"),
       SCISSORS(3, "C");
-      final Set<String> codes;
-      final int score;
       static final Map<String, Shape> CODE_TO_SHAPE = new HashMap<>();
 
       static {
@@ -111,6 +145,9 @@ public class Day2 {
           shape.codes.forEach(code -> CODE_TO_SHAPE.put(code, shape));
         }
       }
+
+      final Set<String> codes;
+      final int score;
 
       Shape(int score, String... codes) {
         this.score = score;
@@ -134,7 +171,7 @@ public class Day2 {
       }
     }
 
-    static enum Result {
+    enum Result {
       LOSE("X"), DRAW("Y"), WIN("Z");
       static final Map<String, Result> CODE_TO_RESULT = new HashMap<>();
 
@@ -187,41 +224,6 @@ public class Day2 {
         return myShape.score + outcome;
       }
     }
-
-    private final List<Game> games = new ArrayList<>();
-
-    public Part2(String input) {
-      for (String lines : input.split("\n")) {
-        String[] shapes = lines.split(" ");
-        games.add(new Game(Shape.fromCode(shapes[0]), Result.fromCode(shapes[1])));
-      }
-    }
-
-    public long score() {
-      return games.stream().mapToLong(Game::score).sum();
-    }
-  }
-
-  public Day2(String input) {
-    part1 = new Part1(input);
-    part2 = new Part2(input);
-  }
-
-  public long part1() {
-    return part1.score();
-  }
-
-  public long part2() {
-    return part2.score();
-  }
-
-  public static void main(String[] args) throws IOException {
-    String input = IOUtils.toString(
-        requireNonNull(Day2.class.getResourceAsStream("/d2/input.txt")),
-        StandardCharsets.UTF_8);
-    Day2 task = new Day2(input);
-    System.out.println("Part1: " + task.part1());
-    System.out.println("Part2: " + task.part2());
   }
 
 

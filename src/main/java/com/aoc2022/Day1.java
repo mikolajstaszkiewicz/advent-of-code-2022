@@ -32,15 +32,6 @@ public class Day1 {
     return elves;
   }
 
-  int part1() {
-    return elvesCalories.stream().mapToInt(x -> x).max().orElseThrow();
-  }
-
-  int part2() {
-    return elvesCalories.stream().sorted(Comparator.reverseOrder()).mapToInt(x -> x).limit(3).sum();
-  }
-
-
   public static void main(String[] args) throws IOException {
     String input = IOUtils.toString(
         requireNonNull(Day1.class.getResourceAsStream("/d1/input.txt")),
@@ -49,5 +40,13 @@ public class Day1 {
     System.out.println("Part1: " + task.part1());
     System.out.println("Part2: " + task.part2());
 
+  }
+
+  int part1() {
+    return elvesCalories.stream().mapToInt(x -> x).max().orElseThrow();
+  }
+
+  int part2() {
+    return elvesCalories.stream().sorted(Comparator.reverseOrder()).mapToInt(x -> x).limit(3).sum();
   }
 }
